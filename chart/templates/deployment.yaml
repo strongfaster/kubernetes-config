@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-chart
+  labels:
+    chart: front
+spec:
+  selector:
+    matchLabels:
+      app: "front-selector"
+  template:
+    metadata:
+      labels:
+        app: "front-selector"
+    spec:
+      containers:
+      - name: front
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.service.servicePort }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds}}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds}}
+        ports:
+          - name: http
+            containerPort: {{ .Values.service.servicePort }}
+            protocol: TCP
+        volumeMounts:
+          - name: src
+            mountPath: /var/www/source
+      volumes:
+        - name: src
+          hostPath:
+            path: {{ .Values.service.localSource }}

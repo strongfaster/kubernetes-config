@@ -1,0 +1,18 @@
+replicaCount: 1
+revisionHistoryLimit: 1
+image:
+  repository: strongdocker11/next
+  tag: v0.0.1
+  pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 200m
+      memory: 300Mis
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 10
+service:
+  name: front
+  type: NodePort
+  servicePort: 3000
+  localSource: /var/www/frontend-service

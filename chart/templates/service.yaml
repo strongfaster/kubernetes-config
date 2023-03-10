@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+  name: "front-service"
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    nodePort: 30444
+  type: NodePort
+  selector:
+    app: "front-selector"
