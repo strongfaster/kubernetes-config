@@ -9,7 +9,7 @@ spec:
   - name: http
     port: 80
     targetPort: http
-    nodePort: 30444
+    nodePort: {{ .Values.service.servicePort }}
   type: NodePort
   selector:
     app: "front-selector"
