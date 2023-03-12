@@ -1,14 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    prometheus.io/scrape: 'true'
-  name: "front-service"
+  name: {{ include "react.fullname" . }}
+  labels:
+    {{- include "react.labels" . | nindent 4 }}
 spec:
+  type: {{ .Values.service.type }}
   ports:
-  - name: http
-    port: 80
-    targetPort: http
-  type: NodePort
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
   selector:
-    app: "front-selector"
+    {{- include "react.selectorLabels" . | nindent 4 }}
